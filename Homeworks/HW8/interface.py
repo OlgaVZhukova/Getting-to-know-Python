@@ -1,23 +1,30 @@
-def get_option()->int:
-    check = False
-    while not check:
-        option = input('Выберите вариант для работы со справочником и нажмите ввод:\n'
-                        + '1 - Для записи нового абонента.\n'
-                        + '2 - Для экспорта в файл, и просмотра телефонной книги.\n')
-        if option in ('1', '2'):
-            check = True
-        else:
-            print('Некорректный вариант ввода. Попробйуте снова.')
-    return int(option)
+from os.path import exists
+from csv_creating import creating
+from file_writing import writing_csv, writing_txt, get_info
+from export import from_file
 
-def get_export_choose_option():
-    check = False
-    while not check:
-        option = input('Выберите действие:\n'
-                        + '1 - Экспорт книги в HTML формат\n'
-                        + '2 - Вывести книгу на экран\n')
-        if option in ('1', '2'):
-            check = True
+def view():
+    print(from_file('Phonebook.txt'))
+
+def record_info():
+    info = get_info()
+    writing_csv(info)
+    writing_txt(info)
+
+def choice():
+    flag = input(
+        'Для продолжения работы нажмите \'да\', или любой символ для завершения работы... ')
+    while (flag.lower() == 'да'):
+        path = 'Phonebook.csv'
+        valid = exists(path)
+        if not valid:
+            creating()
+        choice_action = input(
+            'Введите \'да\', если хотите записать новые данные, и любой другой символ, если хотите просмотреть справочник в консоли: ')
+        if choice_action.lower() == 'да':
+            record_info()
         else:
-            print('Некорректный вариант ввода. Попробйуте снова.')
-    return int(option)
+            view()
+        flag = input(
+            'Для продолжения работы нажмите \'да\', или любой символ для завершения работы... ')
+    print('Программа завершена.')
