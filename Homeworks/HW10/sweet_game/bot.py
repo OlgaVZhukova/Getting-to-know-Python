@@ -25,3 +25,16 @@ def start(message):
         controller(message)
 
 
+def controller(message):
+    global flag
+    if sweets>0:
+        if flag == "user":
+            bot.send_message(message.chat.id, f"Ваш ход: введите количество конфет от 0 до {max_sweet}.")
+            bot.register_next_step_handler(message,user_input)
+        else:
+            bot_input(message)
+    else:
+        flag = "user" if flag == "bot" else "bot"
+        bot.send_message(message.chat.id, f"Победил {flag}!")
+
+
