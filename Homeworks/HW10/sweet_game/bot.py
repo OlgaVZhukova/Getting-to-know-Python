@@ -38,3 +38,20 @@ def controller(message):
         bot.send_message(message.chat.id, f"Победил {flag}!")
 
 
+def bot_input(message):
+    global sweets,bot_turn,flag
+    if sweets <= max_sweet:
+        bot_turn = sweets
+    elif sweets % max_sweet == 0:
+        bot_turn = max_sweet - 1
+    else:
+        bot_turn = sweets % max_sweet - 1
+        if bot_turn == 0:
+            bot_turn = 1
+    sweets -= bot_turn
+    bot.send_message(message.chat.id, f"Бот взял {bot_turn} конфет.")
+    bot.send_message(message.chat.id, f"Осталось {sweets} конфет.")
+    flag = "user" if flag == "bot" else "bot"
+    controller(message)
+
+
