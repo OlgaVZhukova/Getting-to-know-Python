@@ -55,3 +55,13 @@ def bot_input(message):
     controller(message)
 
 
+def user_input(message):
+    global flag, user_turn, sweets
+    user_turn = int(message.text)
+    sweets -= user_turn
+    bot.send_message(message.chat.id, f"Осталось {sweets} конфет.")
+    flag = "user" if flag == "bot" else "bot"
+    controller(message)
+
+
+bot.infinity_polling()
